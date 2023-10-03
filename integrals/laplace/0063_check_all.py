@@ -8,8 +8,10 @@ sympy.SYMPY_DEBUG=True
 
 LT = laplace_transform
 ILT = inverse_laplace_transform
-a, b, c, t = symbols('a, b, c, t', positive=True)
+a, b, c = symbols('a, b, c', positive=True)
+t = symbols('t', real=True)
 n = symbols('n', integer=True)
+np = symbols('np', integer=True, positive=True)
 s, w, x, k = symbols('s, w, x, k')
 f = Function('f')
 F = Function('F')
@@ -40,7 +42,27 @@ Y = Function('Y')
     # (t+a)/sqrt(t**2+2*a*t),
     # Heaviside(2*b-t)*sqrt(2*b*t-t**2)*(b-t), 1/(t+sqrt(t**2+a**2))
     # ]
+# (4.3)
+# list_f = [  # 1-8
+#     t**c, Heaviside(t-b)*t**c, Heaviside(b-t)*t**c, (t+a)**c,
+#     Heaviside(t-b)*(t-b)**c, Heaviside(b-t)*(b-t)**c, t**c/(t+a),
+#     Heaviside(t-b)*(t-b)**c/t]
+# (Heaviside and t**np change)
+# list_f = [
+#     Heaviside(t-a)*g(t), Heaviside(t+a)*g(t), Heaviside(-t+a)*g(t),
+#     Heaviside(-t-a)*g(t)]
+# list_f = [t**n*g(t), t**np*g(t), t**5*g(t)]
+# (4.4)
+list_f = [
+    Piecewise((t, Lt(t, 1)), (1, True)),
+    Piecewise((t, Lt(t, 1)), (t-2, Lt(t, 2)), (0, True)),
+    Piecewise((t**2/2, Lt(t, 1)), (1-(t-2)**2/2, Lt(t, 2)), (1, True)),
+    Piecewise((t**2/2, Lt(t, 1)), (S(3)/4-(t-S(3)/2)**2, Lt(t, 2)),
+              ((t-3)**2/2, Lt(t, 3)), (0, True))]
 
 for x in list_f:
     X = LT(k*x, t, s)
     print('\n', k*x, '\n', X, '\n', file=sys.stderr)
+    print(x)
+    print(X[0].simplify())
+    print(X, '\n')
