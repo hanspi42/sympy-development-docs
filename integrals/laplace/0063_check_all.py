@@ -53,12 +53,31 @@ Y = Function('Y')
 #     Heaviside(-t-a)*g(t)]
 # list_f = [t**n*g(t), t**np*g(t), t**5*g(t)]
 # (4.4)
+# list_f = [
+#     Piecewise((t, Lt(t, 1)), (1, True)),
+#     Piecewise((t, Lt(t, 1)), (t-2, Lt(t, 2)), (0, True)),
+#     Piecewise((t**2/2, Lt(t, 1)), (1-(t-2)**2/2, Lt(t, 2)), (1, True)),
+#     Piecewise((t**2/2, Lt(t, 1)), (S(3)/4-(t-S(3)/2)**2, Lt(t, 2)),
+#               ((t-3)**2/2, Lt(t, 3)), (0, True))]
+# (4.5)
+# list_f = [  # 1-8
+#     exp(-a*t), t*exp(-a*t), t**b*exp(-a*t),
+#     (exp(-a*t)-exp(-b*t))/t, (1-exp(-a*t))**2/t**2,
+#     1/t - (t+2)*(1-exp(-t))/(1*t**2), 1/(1+exp(-t)),
+#     (1-exp(-t/a))**(b-1)]
+# (4.6)
 list_f = [
-    Piecewise((t, Lt(t, 1)), (1, True)),
-    Piecewise((t, Lt(t, 1)), (t-2, Lt(t, 2)), (0, True)),
-    Piecewise((t**2/2, Lt(t, 1)), (1-(t-2)**2/2, Lt(t, 2)), (1, True)),
-    Piecewise((t**2/2, Lt(t, 1)), (S(3)/4-(t-S(3)/2)**2, Lt(t, 2)),
-              ((t-3)**2/2, Lt(t, 3)), (0, True))]
+    # Heaviside(t-b)*exp(-t**2/4/a), t*exp(-t**2/4/a),
+    # exp(-t**2/4/a)/sqrt(t), t**b*t*exp(-t**2/4/a),
+    # exp(-a/(4*t)), sqrt(t)*exp(-a/(4*t)),
+    # exp(-a/(4*t))/sqrt(t), exp(-a/(4*t))*t**(-S(3)/2),
+    # exp(-a/(4*t))*t**(b-1), (exp(-a/(4*t)-1))/sqrt(t),
+    # exp(-2*sqrt(a*t)), sqrt(t)*exp(-2*sqrt(a*t)),
+    # exp(-2*sqrt(a*t))/sqrt(t), exp(-2*sqrt(a*t))/(2*t)**(S(3)/4), 
+    # exp(-2*sqrt(a*t))*(2*t)**(b-1), exp(-a*exp(-t)),
+    # exp(-a*exp(-t)), (1-exp(-t))**b-1*exp(a*exp(-t)),
+    exp(-a*exp(-t)), exp(-a*exp(t)),
+    ]
 
 for x in list_f:
     X = LT(k*x, t, s)
